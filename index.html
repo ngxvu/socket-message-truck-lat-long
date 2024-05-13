@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+</head>
+<body>
+    <button onclick="connect()">Connect to WebSocket</button>
+    <button onclick="sendMessage()">Send WebSocket Message</button>
+    <script>
+        let socket;
+
+        function connect() {
+            // Thay đổi URL của WebSocket tùy thuộc vào nơi bạn đặt máy chủ WebSocket của mình
+            const url = "ws://103.124.93.27:8080"; // Thay đổi thành URL của máy chủ WebSocket của bạn
+
+            socket = new WebSocket(url);
+
+            socket.onopen = function(event) {
+                console.log("WebSocket connected");
+            };
+
+            socket.onmessage = function(event) {
+                console.log("Received message: ", event.data);
+            };
+
+            socket.onclose = function(event) {
+                console.log("WebSocket closed");
+            };
+
+            socket.onerror = function(error) {
+                console.error("WebSocket error: ", error);
+            };
+        }
+
+        function sendMessage() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                const messages = [
+
+                // truong hop chi co xe khong available
+                    // {"name": "59H-21311","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe ko available nhưng và xa hơn xe available 
+                    // {"name": "50H-17057","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe khác chủ xe
+                    // {"name": "50H-17020","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe khác chủ xe
+                    // {"name": "50H-09557","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},},// xe khác chủ xe
+                  
+                    
+                    // truong hop co xe available
+                    // {"name": "59H-21312","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe ở 49 Đ. Cách Mạng Tháng 8, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh, Việt Nam
+                    // {"name": "59H-21313","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},}, // xe ở RP47+HC6 Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam
+                    // {"name": "50H-17057","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe khác chủ xe
+                    // {"name": "50H-17020","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe khác chủ xe
+                    // {"name": "50H-09557","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},},// xe khác chủ xe
+                    
+                    // {"name": "59H-21311","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe ko available nhưng mà xa hơn xe available 
+                    // {"name": "59H-21312","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe ở 49 Đ. Cách Mạng Tháng 8, Phường Phạm Ngũ Lão, Quận 1, Thành phố Hồ Chí Minh, Việt Nam
+                    // {"name": "59H-21313","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},}, // xe ở RP47+HC6 Bình Thạnh, Thành phố Hồ Chí Minh, Việt Nam
+                    // {"name": "50H-17057","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe khác chủ xe
+                    // {"name": "50H-17020","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe khác chủ xe
+                    // {"name": "50H-09557","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},} // xe khác chủ xe
+
+                    // {"name": "59H-21311","gps":{"lat":"10.774838165565848", "lng":"106.69624419718893"},}, // xe ko available ở gần đơn mới hơn cả xe available
+                    // {"name": "59H-21312","gps":{"lat":"10.924698440778414", "lng":"106.80448998689474"},}, // xe ở Hóa An, Hoà An, Thành phố Biên Hòa, Đồng Nai, Việt Nam
+                    // {"name": "59H-21313","gps":{"lat":"10.959851977465227", "lng":"106.74881503058039"},}, // xe ở Đường An Phú 17, khu nhà ở, 1 Đường N3), Tổ 25, Khu phố 1B, Thuận An, Bình Dương 75200, Việt Nam
+                    // {"name": "50H-17057","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe khác chủ xe
+                    // {"name": "50H-17020","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe khác chủ xe
+                    // {"name": "50H-09557","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},} // xe khác chủ xe
+
+                    {"name": "59H-21312","gps":{"lat":"10.924698440778414", "lng":"106.80448998689474"},}, // location Hóa An, Hoà An, Thành phố Biên Hòa, Đồng Nai, Việt Nam
+                    {"name": "59H-21313","gps":{"lat":"10.959851977465227", "lng":"106.74881503058039"},}, // Đường An Phú 17, khu nhà ở, 1 Đường N3), Tổ 25, Khu phố 1B, Thuận An, Bình Dương 75200, Việt Nam
+                    {"name": "50H-17057","gps":{"lat":"10.78502384726513", "lng":"106.745907389080229"},}, // xe khác chủ xe
+                    {"name": "50H-17020","gps":{"lat":"10.771817875291665", "lng":"106.69237043435506"},}, // xe khác chủ xe
+                    {"name": "50H-09557","gps":{"lat":"10.806420364380013", "lng":"106.7135149422722"},} // xe khác chủ xe
+                ];
+
+                messages.forEach(message => {
+                    socket.send(JSON.stringify(message));
+                });
+            } else {
+                console.error("WebSocket is not connected");
+            }
+        }
+    </script>
+</body>
+</html>
